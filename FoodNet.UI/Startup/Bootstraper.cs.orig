@@ -1,0 +1,36 @@
+﻿using Autofac;
+using FoodNet.DataAccess;
+using FoodNet.UI.Data;
+<<<<<<< HEAD
+using FoodNet.UI.Data.Interfaces;
+=======
+using FoodNet.UI.View;
+>>>>>>> Initial recipes book
+using FoodNet.UI.ViewModel;
+
+namespace FoodNet.UI.Startup
+{
+    public class Bootstraper
+    {
+        public IContainer Bootstrap()
+        {
+            var builder = new ContainerBuilder();
+
+            builder.RegisterType<FoodNetDbContext>().AsSelf();
+
+            builder.RegisterType<FridgeRepository>().As<IFridgeRepository>();
+            builder.RegisterType<ProductsRepository>().As<IProductsRepository>();
+            builder.RegisterType<RecipesDataService>().As<IRecipesDataService>();
+            builder.RegisterType<RecipesForFridgeDataService>().As<IRecipesForFridgeDataService>();
+
+            builder.RegisterType<MainWindow>().AsSelf();
+            builder.RegisterType<MainViewModel>().AsSelf();
+            builder.RegisterType<ResultViewModel>().AsSelf();
+            builder.RegisterType<StartViewModel>().AsSelf();
+            builder.RegisterType<FridgeViewModel>().AsSelf();
+            builder.RegisterType<RecipesBookViewModel>().AsSelf();
+
+            return builder.Build();
+        }
+    }
+}

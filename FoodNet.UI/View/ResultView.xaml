@@ -1,0 +1,252 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FoodNet.UI.View"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Background="{DynamicResource MaterialDesignPaper}"
+             xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit" 
+             xmlns:materialDesignMahApps="http://materialdesigninxaml.net/winfx/xaml/themes" 
+             x:Class="FoodNet.UI.View.ResultView"
+             xmlns:converters="clr-namespace:FoodNet.UI.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="1080" d:DesignWidth="900">
+    <UserControl.Resources>
+        <converters:BooleanVisibilityConverter x:Key="BooleanVisibilityConverter"
+         TrueValue="Visible" FalseValue="Hidden" />
+        <converters:InvertBoolConverter x:Key="InvertBoolConverter"/>
+    </UserControl.Resources>
+    <Grid Height="960" Margin="0 0 50 100">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="12*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <StackPanel VerticalAlignment="Center" Grid.ColumnSpan="2" Grid.Row="0" RenderTransformOrigin="0.505,1.178">
+            <Button Content="SEE ALL RECIPES" Command="{Binding DataContext.DisplayRecipesBookView, RelativeSource=
+                {RelativeSource AncestorType={x:Type Window}}, Mode=OneWay}"
+                    Width="300"  Height="50" Margin="20,0,20,10" FontSize="25"/>
+            <Button Content="GO BACK TO FRIDGE" Command="{Binding DataContext.DisplayFridgeView, RelativeSource=
+                {RelativeSource AncestorType={x:Type Window}}, Mode=OneWay}"
+                    Width="300"  Height="50" Margin="20,0,20,0" FontSize="25"/>
+        </StackPanel>
+        <Border BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="1" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
+            <Grid>
+                <Grid.Resources>
+                    <Style TargetType="{x:Type TextBox}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding EditMode}" Value="True">
+                                <Setter Property="Focusable" Value="True"/>
+                                <Setter Property="Background" Value="#EBEBEB"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding EditMode}" Value="False">
+                                <Setter Property="Focusable" Value="False"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Resources>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" MinHeight="30"/>
+                    <RowDefinition Height="1*" MinHeight="30"/>
+                    <RowDefinition Height="5*" MaxHeight="200"/>
+                    <RowDefinition Height="1*" MinHeight="45"/>
+
+                    <RowDefinition Height="1*" MinHeight="30"/>
+                    <RowDefinition Height="1*" MinHeight="30"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="1*" MinHeight="30"/>
+                </Grid.RowDefinitions>
+
+                <!--RecipeTitle-->
+                <TextBox x:Name="EditableTitle" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
+                   TextAlignment="Center" FontSize="25"
+                  BorderThickness="0" Text="{Binding SelectedRecipe.Title, Mode=TwoWay}"/>
+
+                <!--"Products"-->
+                <TextBlock Grid.Row="1" Grid.Column="0" Margin="10,0,0,0"
+                   TextAlignment="Left" FontSize="25" Foreground="{DynamicResource PrimaryHueMidBrush}"
+                  FontWeight="Bold" Text="Products:" IsEnabled="False" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+                <!--RecipeProducts list-->
+                <Border BorderBrush="Black" BorderThickness="1" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Margin="10,0,0,0">
+                    <ListView Name="myList"  Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding SelectedRecipeProductLookups}"
+                     SelectedItem="{Binding SelectedRecipeProductLookup, Mode=TwoWay}" HorizontalContentAlignment="Stretch" FontSize="20" >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock  Text="{Binding ProductName}"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Border>
+
+                <!--"Recipe"-->
+                <TextBlock Grid.Row="5" Grid.Column="0" Margin="10,0,0,0"
+                   FontWeight="Bold" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="{DynamicResource PrimaryHueMidBrush}"
+                   Text="Recipe:"/>
+
+                <!--Recipe Description-->
+                <Border BorderBrush="Black" BorderThickness="1" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Margin="10,0,0,0">
+                    <Border.Resources>
+                        <Style TargetType="{x:Type TextBox}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding EditMode}" Value="True">
+                                    <Setter Property="Focusable" Value="True"/>
+                                    <Setter Property="Background" Value="#EBEBEB"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding EditMode}" Value="False">
+                                    <Setter Property="Focusable" Value="False"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Resources>
+                    <ScrollViewer>
+                        <TextBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3"
+                        FontSize="20" BorderThickness="0" Foreground="Black"
+                        AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding SelectedRecipe.Description, Mode=TwoWay}"/>
+                    </ScrollViewer>
+                </Border>
+
+                <!--RecipeProducts manipulation stack panel-->
+                <StackPanel Margin="10,0,0,0" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.ColumnSpan="3" Height="30"
+                     Visibility="{Binding EditMode, Converter={StaticResource BooleanVisibilityConverter}}">
+                    <Label Content="Type product name: " HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
+                    <Controls:AutoCompleteBox ItemsSource="{Binding Products}"
+                        SelectedItem="{Binding SelectedSearchBoxProduct, Mode=TwoWay}"
+                        ValueMemberBinding="{Binding Name}"
+                        IsTextCompletionEnabled="True"
+                        Width="200"
+                        Height="40"
+                        FontSize="20">
+                        <Controls:AutoCompleteBox.ItemTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding Name}"/>
+                            </DataTemplate>
+                        </Controls:AutoCompleteBox.ItemTemplate>
+                    </Controls:AutoCompleteBox>
+                    <Button Command="{Binding AddRecipeProduct}" Visibility="Visible" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <materialDesign:PackIcon Kind="Plus" Height="25" Width="25" FontWeight="Bold" />
+                    </Button>
+                    <Button Command="{Binding RemoveRecipeProduct}" x:Name="RemovalButton" Visibility="{Binding EditMode, Converter={StaticResource BooleanVisibilityConverter}}"
+                           IsEnabled="{Binding CanRemoveRecipeProduct}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <materialDesign:PackIcon Kind="Minus" Height="25" Width="25" FontWeight="Bold" />
+                    </Button>
+                </StackPanel>
+
+                <!--"Add your own products"-->
+                <Button Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="4" Grid.Column="0" Content="Add your own product" 
+                    Visibility="{Binding EditMode, Converter={StaticResource BooleanVisibilityConverter}}" FontSize="15" 
+                    Style="{DynamicResource MaterialDesignRaisedAccentButton}"
+                    Command="{Binding OpenNewProductDialogCommand}" Height="30" Grid.RowSpan="1"/>
+
+                <!--Save/Discard changes-->
+                <StackPanel Grid.Row="7" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Content="Save" Command="{Binding SaveChanges}" Margin="5,0,0,0" Visibility="{Binding EditMode, Converter={StaticResource BooleanVisibilityConverter}}"/>
+                    <Button Content="Discard" Command="{Binding DiscardChanges}" Margin="5,0,0,0" Visibility="{Binding EditMode, Converter={StaticResource BooleanVisibilityConverter}}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!--AllRecipes grid-->
+        <Grid Grid.Column="0" Grid.Row="1" Grid.RowSpan="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" MinHeight="40"/>
+                <RowDefinition Height="15*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" Text="All Recipes : " RenderTransformOrigin="0.82,0.375" 
+                       FontWeight="Bold" FontSize="30" Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+            <ListView Grid.Column="0" Grid.Row="1" SelectedItem="{Binding SelectedRecipe, Mode=TwoWay}" ItemsSource="{Binding Recipes}"
+                     IsEnabled="{Binding EditMode, Converter={StaticResource InvertBoolConverter}}" HorizontalContentAlignment="Stretch" FontSize="20" Margin="10,5,10,10.333">
+                <ListView.ItemTemplate>
+                    <DataTemplate >
+                        <TextBlock  Text="{Binding Title}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+
+        <!--Recipes manipulation stack-->
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type Image}">
+                    <Setter Property="Margin" Value="0,0,10,0"/>
+                    <Setter Property="Visibility" Value="Visible"/>
+                </Style>
+            </StackPanel.Resources>
+            <Button Command="{Binding AddRecipe}">
+                <materialDesign:PackIcon Kind="Plus" Height="25" Width="25" FontWeight="Bold" />
+            </Button>
+
+            <Button Command="{Binding RemoveRecipe}">
+                <materialDesign:PackIcon Kind="Minus" Height="25" Width="25" FontWeight="Bold" />
+            </Button>
+
+            <Button Command="{Binding ToggleEditMode, Mode=OneWay}" IsEnabled="{Binding EditMode, Converter={StaticResource InvertBoolConverter}}">
+                <materialDesign:PackIcon Kind="Settings" Height="25" Width="25" FontWeight="Bold" />
+            </Button>
+        </StackPanel>
+
+        <!--NewProductDialog-->
+        <materialDesign:DialogHost IsOpen="{Binding IsDialogOpen}" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="10,-10,-10,10">
+            <materialDesign:DialogHost.DialogContent>
+                <StackPanel Margin="20">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="4*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+
+                        <Label Content="Name : " Margin="10"/>
+                        <TextBox Grid.Column="1"
+                     Text="{Binding NewProductName, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="10"/>
+
+                        <Label Grid.Row="1"  Content="Description : " Margin="10"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" 
+                     Text="{Binding NewProductDescription, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="10" TextWrapping="Wrap" Height="100" Width="150"/>
+
+                        <Label Grid.Row="2" Content="Category : " Margin="10"/>
+                        <ComboBox Grid.Row="2" Grid.Column="2" 
+                      ItemsSource="{Binding Categories}"
+                      SelectedItem="{Binding NewProductCategory}"
+                      DisplayMemberPath="Name" 
+                      Margin="10"/>
+
+                        <Button Grid.Row="3" Content="Cancel"
+                    Command="{Binding CancelCommand}"
+                    Margin="10 0 0 0"/>
+                        <Button Grid.Row="3" Grid.Column="1" Content="Add"
+                    Command="{Binding AddCommand}"
+                    Margin="100 0 10 0"/>
+                    </Grid>
+                </StackPanel>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
+
+    </Grid>
+</UserControl>
+   
